@@ -1,0 +1,73 @@
+= ganapati -- Hadoop HDFS Thrift interface for Ruby
+
+A Ruby thrift lib for interfacing with Hadoop's distributed file system, HDFS.
+
+To install:
+  gem install ganapati
+
+== Starting thrift server
+Documentation in Hadoop for the thrift interface to HDFS is crap.  It can be found here[http://wiki.apache.org/hadoop/HDFS-APIs].
+  
+As a much simpler and safer way of auto compiling and then starting the thrift interface, use the provided script:
+  bin/hdfs_thrift_server <port>
+
+This will start a thrift server on the given port (after compiling the server code provided in the Hadoop distribution).
+
+== Basic Usage
+  require 'rubygems'
+  require 'ganapati'
+
+  # args are host, port, and optional timeout
+  client = Ganapati::Client.new 'localhost', 1234
+
+  # copy a file to hdfs
+  client.put("/some/file", "/some/hadoop/path")
+  
+  # get a file from hadoop
+  client.get("/some/hadoop/path", "/local/path")
+
+  # Create a file
+  f = client.create("/home/someuser/afile.txt")
+  f.write("this is some text")
+  # Always, always close the file
+  f.close 
+
+  # Create a file with code block
+  client.create("/home/someuser/afile.txt") { |f|
+    f.write("this is some text")
+  }
+
+  # Open a file for reading and read it
+  c.open('/home/someuser/afile.txt') { |f| 
+    puts f.read 
+    # or read for specific length from start
+    puts f.read(0, 4)
+  }
+
+  # Open a file for appending and append to it
+  c.append('/home/someuser/afile.txt') { |f| 
+    f.write "new data" 
+  }	  
+
+  ## Common file methods are available (chown, chmod, mkdir, stat, etc).  Examples:
+  # move a file
+  client.mv "/home/someuser/afile.txt", "/home/someuser/test.txt"
+
+  # remove a file
+  client.rm "/home/someuser/test.txt"
+
+  # test for file existance
+  client.exists? "/home/someuser/test.txt"
+
+  # get a list of all files
+  client.ls "/home"
+
+  client.close
+
+  # Quick and dirty way to print remote file.  The run class method takes care of closing the client.
+  puts Ganapati::Client.run('localhost', 1234) { |c| c.open('/home/someuser/afile.txt') { |f| f.read } } 
+
+
+
+
+

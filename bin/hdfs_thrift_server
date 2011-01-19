@@ -1,0 +1,20 @@
+#!/bin/bash
+JARFILE=$HADOOP_HOME/lib/HadoopThriftServer.jar
+CONTRIBLIB=$HADOOP_HOME/src/contrib/thriftfs/lib
+CLASSPATH=$(ls $HADOOP_HOME/hadoop-core-*.jar):$(ls $HADOOP_HOME/lib/commons-logging-api-*.jar):$CONTRIBLIB/hadoopthriftapi.jar:$CONTRIBLIB/libthrift.jar:$HADOOP_HOME/conf
+
+if [ "$1" == "" ]; then
+    echo "Usage: $0 <port>"
+    exit 1
+fi
+
+if [ ! -e "$JARFILE" ]; then
+    echo "Creating thrift server jar file at $JARFILE"
+    mkdir -p /tmp/HadoopThriftServer    
+    javac -classpath $CLASSPATH -d /tmp/HadoopThriftServer/ $CONTRIBLIB/../src/java/org/apache/hadoop/thriftfs/HadoopThriftServer.java
+    jar -cf $JARFILE -C /tmp/HadoopThriftServer/ .
+else
+    echo "Found jar file at $JARFILE"
+fi
+
+java -Dcom.sun.management.jmxremote -cp $JARFILE:$CLASSPATH org.apache.hadoop.thriftfs.HadoopThriftServer $1
