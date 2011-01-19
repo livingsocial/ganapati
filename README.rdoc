@@ -38,14 +38,14 @@ This will start a thrift server on the given port (after compiling the server co
   }
 
   # Open a file for reading and read it
-  c.open('/home/someuser/afile.txt') { |f| 
+  client.open('/home/someuser/afile.txt') { |f| 
     puts f.read 
     # or read for specific length from start
     puts f.read(0, 4)
   }
 
   # Open a file for appending and append to it
-  c.append('/home/someuser/afile.txt') { |f| 
+  client.append('/home/someuser/afile.txt') { |f| 
     f.write "new data" 
   }	  
 
