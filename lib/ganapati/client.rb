@@ -34,14 +34,21 @@ module Ganapati
     # copy remote file to local
     def get(remotepath, destpath)
       Kernel.open(destpath, 'w') { |dest|
-        open(remotepath) { |source|
-          size = source.length
-          index = 0
-          while index < size
-            dest.write(source.read(index, 1048576))
-            index += 1048576
-          end
+        readchunks(remotepath) { |chunk|
+          dest.write chunk
         }
+      }
+    end
+
+    # yeild chunksize of path one chunk at a time
+    def readchunks(path, chunksize=1048576)
+      open(path) { |source|
+        size = source.length
+        index = 0
+        while index < size
+          yield source.read(index, chunksize)
+          index += chunksize
+        end
       }
     end
 

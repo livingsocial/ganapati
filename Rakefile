@@ -24,7 +24,7 @@ end
 
 spec = Gem::Specification.new do |s|
   s.name = "ganapati"
-  s.version = "0.0.2"
+  s.version = "0.0.3"
   s.authors = ["Brian Muller"]
   s.date = %q{2011-01-28}
   s.description = "Hadoop HDFS Thrift interface for Ruby"
