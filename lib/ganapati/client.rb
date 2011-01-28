@@ -117,7 +117,7 @@ module Ganapati
     end
 
     def pname(path)
-      Pathname.new(:pathname => path.to_s)
+      ThriftHadoopFileSystem::Pathname.new(:pathname => path.to_s)
     end
   end
 
