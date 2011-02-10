@@ -52,6 +52,22 @@ module Ganapati
       }
     end
 
+    def readlines(path, sep="\n")
+      lastbit = ""
+      readchunks(path) { |chunk|
+        parts = chunk.split(sep)
+        if parts.length == 0
+          yield lastbit if lastbit != ""
+        elsif parts.length == 1
+          yield lastbit + parts.first
+        else
+          yield lastbit + parts.first
+          parts.slice(1, parts.length).each { |p| yield p }          
+        end
+        lastbit = ""
+      }
+    end
+
     # for writing to a new file
     def create(path, &block)
       file_handle :create, path, &block

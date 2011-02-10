@@ -44,6 +44,11 @@ This will start a thrift server on the given port (after compiling the server co
     puts f.read(0, 4)
   }
 
+  # read a file line by line
+  client.readlines('/home/someuser/afile.txt') { |line|
+    puts line
+  }
+
   # Open a file for appending and append to it
   client.append('/home/someuser/afile.txt') { |f| 
     f.write "new data" 
