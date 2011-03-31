@@ -1,0 +1,64 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require 'rubygems'
+require 'ganapati'
+
+options = { :recursive => false, :verbose => false }
+op = OptionParser.new { |opts|
+  opts.banner = "Usage: hcp [options] source dest"
+
+  opts.on('-h', '--help', 'displays usage information') { 
+    puts opts
+    exit
+  }
+
+  opts.on('-v', '--verbose', 'verbose') {
+    options[:verbose] = true
+  }
+
+  opts.on('-r', '--recursive', 'copy recursively') {
+    puts "Recursive option not supported yet."
+    exit 1
+    #options[:recursive] = true
+  }
+}
+op.parse!
+
+if ARGV.length != 2
+  puts op.to_s
+  exit 1
+end
+
+class LocalFile
+  def create(location)
+    f = open(location, 'w')
+    yield f
+    f.close
+  end
+
+  def readlines(location)
+    f = open(location, 'r')
+    while (line = f.gets)
+      yield line
+    end
+    f.close
+  end
+  
+  def close
+  end
+end
+
+spath = Ganapati::FileUrl.new ARGV[0], :file
+dpath = Ganapati::FileUrl.new ARGV[1], :file
+
+source = spath.hdfs? ? Ganapati::Client.new(spath.host, spath.port) : LocalFile.new
+dest = dpath.hdfs? ? Ganapati::Client.new(dpath.host, dpath.port) : LocalFile.new
+
+dest.create(dpath.path) { |f|
+  source.readlines(spath.path) { |line|
+    f.write(line)
+  }
+}
+
+source.close
+dest.close

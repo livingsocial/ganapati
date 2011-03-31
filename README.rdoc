@@ -1,6 +1,6 @@
 = ganapati -- Hadoop HDFS Thrift interface for Ruby
 
-A Ruby thrift lib for interfacing with Hadoop's distributed file system, HDFS.
+Ganapati is a Ruby thrift lib for interfacing with Hadoop's distributed file system, HDFS.  It also includes a few command line client utilities.
 
 To install:
   gem install ganapati
@@ -72,6 +72,14 @@ This will start a thrift server on the given port (after compiling the server co
   # Quick and dirty way to print remote file.  The run class method takes care of closing the client.
   puts Ganapati::Client.run('localhost', 1234) { |c| c.open('/home/someuser/afile.txt') { |f| f.read } } 
 
+== Command Line Utilities
+There are a few utility programs included in the bin directory.  *hls* provides a way to see the contents of HDFS (recursively and verbosely with appropriate command line options):
+  ./bin/hls hdfs://host:port/tmp
+
+*hcp* provides a way to copy to/from/between HDFS servers:
+  ./bin/hcp hdfs://host:port/some/path/to/file ./file
+  ./bin/hcp ./file hdfs://host:port/some/path/to/file
+  ./bin/hcp hdfs://anotherhost:port/some/path/to/file hdfs://host:port/some/path/to/file
 
 
 

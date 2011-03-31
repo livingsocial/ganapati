@@ -1,8 +1,9 @@
 require 'rubygems'
-require 'rake'
+require 'bundler'
 require 'rake/testtask'
 require 'rake/rdoctask'
-require 'rake/gempackagetask'
+
+Bundler::GemHelper.install_tasks
 
 desc "Create documentation"
 Rake::RDocTask.new("doc") { |rdoc|
@@ -22,27 +23,10 @@ task "regen_thrift" do
   system "mv /tmp/gen-rb/* lib/thrift"
 end
 
-spec = Gem::Specification.new do |s|
-  s.name = "ganapati"
-  s.version = "0.0.4"
-  s.authors = ["Brian Muller"]
-  s.date = %q{2011-02-10}
-  s.description = "Hadoop HDFS Thrift interface for Ruby"
-  s.summary = "Simple lib for interfaceing with Hadoop's distributed file system HDFS."
-  s.email = "brian.muller@livingsocial.com"
-  s.files = FileList["lib/**/*"]
-  s.homepage = "https://github.com/livingsocial/ganapati"
-  s.require_paths = ["lib"]
-  s.bindir = "bin"
-  s.executables << 'hdfs_thrift_server'
-  s.rubygems_version = "1.3.5"
-  s.add_dependency('thrift', '>= 0.5.0')
-end
-
-Rake::GemPackageTask.new(spec) do |pkg|
-  pkg.need_zip = true
-  pkg.need_tar = true
-end
-
-desc "Default task: builds gem"
 task :default => [ :gem, :doc ]
+
+
+
+
+
+

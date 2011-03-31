@@ -103,9 +103,11 @@ module Ganapati
       @client.stat pname(path)
     end
 
-    def ls(path, details=false)
+    def ls(path, details=false, recursive=false)
       statuses = @client.listStatus pname(path)
-      (details) ? statuses : statuses.map { |s| s.path }
+      paths = (details) ? statuses : statuses.map { |s| s.path }
+      return paths if not recursive
+      paths + statuses.select { |s| s.isdir }.map { |s| ls(s.path, details, recursive) }.flatten
     end
 
     def chmod(path, mode)

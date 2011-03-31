@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require 'rubygems'
+require 'ganapati'
+
+VERBOSE_PROPS = [:path, :length, :isdir, :modification_time, :permission, :owner, :group]
+
+options = { :verbose => false, :recursive => false }
+op = OptionParser.new { |opts|
+  opts.banner = "Usage: hls [options] host:port/location"
+
+  opts.on('-h', '--help', 'displays usage information') { 
+    puts opts
+    exit
+  }
+
+  opts.on('-r', '--recursive', 'copy recursively') {
+    options[:recursive] = true
+  }
+
+  opts.on('-v', '--verbose', 'verbose output') {
+    puts VERBOSE_PROPS.map { |a| a.to_s }.join("\t")
+    options[:verbose] = true
+  }
+}
+op.parse!
+
+if ARGV.length != 1
+  puts op.to_s
+  exit 1
+end
+
+url = Ganapati::FileUrl.new ARGV.first
+client = Ganapati::Client.new url.host, url.port
+client.ls(url.path, options[:verbose], options[:recursive]).each { |s|
+  if options[:verbose]
+    puts VERBOSE_PROPS.map { |p| s.send p }.join("\t")
+  else
+    puts s
+  end
+}
+client.close
