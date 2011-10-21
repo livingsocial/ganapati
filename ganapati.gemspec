@@ -19,4 +19,5 @@ Gem::Specification.new do |s|
   s.executables << 'hcp'
   s.rubyforge_project = "ganapati"
   s.add_dependency('thrift', '>= 0.5.0')
+  s.add_development_dependency('mocha', '>=0.10.0')
 end
