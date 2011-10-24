@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.description = "Hadoop HDFS Thrift interface for Ruby"
   s.summary = "Simple lib for interfaceing with Hadoop's distributed file system HDFS."
   s.email = "brian.muller@livingsocial.com"
-  s.files = Dir.glob("{bin,lib,docs}/**/*") + %w(Gemfile LICENSE Rakefile README.rdoc)
+  s.files = Dir.glob("{bin,lib,docs}/**/*") + %w(Gemfile Gemfile.lock LICENSE Rakefile README.rdoc)
   s.homepage = "https://github.com/livingsocial/ganapati"
   s.require_paths = ["lib"]
   s.bindir = "bin"

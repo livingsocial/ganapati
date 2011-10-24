@@ -1,0 +1,20 @@
+PATH
+  remote: .
+  specs:
+    ganapati (0.0.6)
+      thrift (>= 0.5.0)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    metaclass (0.0.1)
+    mocha (0.10.0)
+      metaclass (~> 0.0.1)
+    thrift (0.7.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  ganapati!
+  mocha (>= 0.10.0)
