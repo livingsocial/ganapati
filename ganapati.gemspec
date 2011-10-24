@@ -1,9 +1,9 @@
 $:.push File.expand_path("../lib", __FILE__)
-#require "ganapati/version"
+require "ganapati/version"
 
 Gem::Specification.new do |s|
   s.name = "ganapati"
-  s.version = "0.0.5"
+  s.version = Ganapati::VERSION
   s.authors = ["Brian Muller"]
   s.date = %q{2011-02-10}
   s.description = "Hadoop HDFS Thrift interface for Ruby"
