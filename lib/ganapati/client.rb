@@ -7,7 +7,8 @@ module Ganapati
       @transport.open
       protocol = Thrift::BinaryProtocol.new(@transport)
       @client = ThriftHadoopFileSystem::Client.new(protocol)
-      @client.setInactivityTimeoutPeriod(timeout)
+      # some versions of ruby + thrift cause an error if the following is called
+      @client.setInactivityTimeoutPeriod(timeout) unless timeout.nil?
     end
 
     def close
