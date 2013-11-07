@@ -1,5 +1,7 @@
 = ganapati -- Hadoop HDFS Thrift interface for Ruby
 
+== Note - this project has been abandoned by LivingSocial at this point in time. Feel free to fork if you wish to continue development. We have switched to using https://github.com/kzk/webhdfs for our projects.
+
 Ganapati is a Ruby thrift lib for interfacing with Hadoop's distributed file system, HDFS.  It also includes a few command line client utilities.
 
 To install:
